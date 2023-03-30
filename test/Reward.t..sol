@@ -8,7 +8,7 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 
 contract CounterTest is Test {
-    Launch launch;
+    Launcher launcher;
     Launchtoken token;
     address tester1 = mkaddr("tester1");
     address tester2 = mkaddr("tester2");
@@ -16,17 +16,18 @@ contract CounterTest is Test {
     function setUp() public {
         vm.startPrank(tester1);
         token = new Launchtoken();
-        launch = new Launch();
+        launcher = new Launcher();
         vm.stopPrank();
     }
 
 function testAddReward() public {
     address tokenaddr = address(token);
-    address launchaddr = address(launch);
+    address launchaddr = address(launcher);
+    vm.prank(tokenaddr);
+    IERC20(token).approve(address(launcher), 100000000); // Add approval step
     vm.startPrank(tester1);
     vm.deal(tester1, 100000 ether);
-    token.approve(launchaddr, 100); // Add approval step
-    launch.AddReward(tokenaddr, 10, 100, 9999999, tester1);
+    launcher.AddReward(tokenaddr, 10, 100, 9999999, tester1);
 }
 
 

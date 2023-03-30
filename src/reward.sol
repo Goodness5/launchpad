@@ -4,7 +4,7 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 // import "../lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 
-contract Launch {
+contract Launcher {
 
 
     address owner;
@@ -56,7 +56,7 @@ contract Launch {
     Rewards[reward_name].duration = duration;
     Rewards[reward_name].totalReward = total_reward;
     rewardnames.push(reward_name);
-    // IERC20(_tokenaddr).approve(address(this), total_reward);
+    IERC20(_tokenaddr).approve(address(this), total_reward);
     IERC20(_tokenaddr).transferFrom(_tokenaddr, address(this), total_reward);
     return true;
 }
