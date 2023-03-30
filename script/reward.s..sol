@@ -6,5 +6,12 @@ import "../src/reward.sol";
 import "../src/token.sol";
 
 contract RewardScript is Script {
-    
+    Launch launch;
+    Launchtoken token;
+
+    function run() public {
+        token = new Launchtoken();
+        launch = new Launch(address(token), "Launch");
+    }
+
 }
