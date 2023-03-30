@@ -11,7 +11,7 @@ contract RewardScript is Script {
 
     function run() public {
         token = new Launchtoken();
-        launch = new Launch(address(token), "Launch");
+        launch = new Launch();
     }
 
 }
