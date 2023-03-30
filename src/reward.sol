@@ -87,4 +87,11 @@ contract Reward {
         
     }
 
+    function withdraweth(uint256 _value) internal returns (bool success){
+        require(address(this).balance >= _value, "insufficient balance");
+        address payable reciepient = payable(msg.sender);
+        success = reciepient.send(_value);
+        require(success, "withdrawal failed");
+    }
+
 }
