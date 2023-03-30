@@ -6,4 +6,5 @@ contract Launchtoken is ERC20 {
     constructor() ERC20("Launch","MG") {
         _mint(msg.sender, 20*10**18);
     }
+    
 }
