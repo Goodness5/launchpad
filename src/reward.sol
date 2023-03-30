@@ -21,6 +21,7 @@ contract Reward {
         uint clientdeposit;
         string _rewardname;
     }
+    bool startlauch;
 
 
 
@@ -52,6 +53,7 @@ contract Reward {
     }
 
    function participate(string memory _rewardname) payable public {
+    require(startlauch, "launch not started");
     address rewardaddr = Rewards[_rewardname].tokenaddress;
     require(rewardaddr !=address(0), "reward does not exist");
     require(msg.value > 0, "Please send some Ether");
@@ -63,6 +65,7 @@ contract Reward {
     }
 
     function endlaunch() public onlyOwner {
+
         for (uint i = 0; i < clients.length; i++) {
             address eachaddress = clients[i];
             clientdetails storage eachclient = userdetails[eachaddress];
@@ -70,8 +73,9 @@ contract Reward {
             address rewardaddr = eachclient.rewardaddress;
             string memory _rewardname = eachclient._rewardname;
            int eachreward =  calcreward(clientamount, rewardaddr, _rewardname);
-           transferERC20Token(rewardaddr, eachreward, eachaddress);
+           transferERC20Token(rewardaddr, uint(eachreward), eachaddress);
         }
+        startlauch = false;
 
 
 
