@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
-contract Reward {
+contract Launch {
 
 
     address owner;
@@ -13,6 +13,9 @@ contract Reward {
     }
 
     mapping (string => rewarddetails) Rewards;
+    string[] rewardnames;
+
+
     mapping (address => clientdetails) userdetails;
     address[] clients;
 
@@ -40,10 +43,16 @@ contract Reward {
    function AddReward(address _tokenaddr, uint rate, string memory reward_name) public onlyOwner returns  (bool _tokenAdded) {
     require(_tokenaddr != address(0), "address must be valid");
     Rewards[reward_name] = rewarddetails(rate, _tokenaddr);
+    rewardnames.push(reward_name);
     return true;
 }
 
-    function calcreward(uint amount, address _reward, string memory rewardName) view public  returns (int duereward) {
+    function getRewardNames() public view returns (string[] memory) {
+        return rewardnames;
+    }
+
+
+    function calcreward(uint amount, string memory rewardName) view public  returns (int duereward) {
          rewarddetails storage reward = Rewards[rewardName];
          require(reward.tokenaddress != address(0));
          uint rate = reward.rate;
@@ -59,7 +68,7 @@ contract Reward {
     require(msg.value > 0, "Please send some Ether");
     uint amount = msg.value;
     clients.push(msg.sender);
-    userdetails[msg.sender].clientdeposit = msg.value;
+    userdetails[msg.sender].clientdeposit = amount;
     userdetails[msg.sender]._rewardname = _rewardname;
     
     }
@@ -72,7 +81,7 @@ contract Reward {
             uint clientamount = eachclient.clientdeposit;
             address rewardaddr = eachclient.rewardaddress;
             string memory _rewardname = eachclient._rewardname;
-           int eachreward =  calcreward(clientamount, rewardaddr, _rewardname);
+           int eachreward =  calcreward(clientamount, _rewardname);
            transferERC20Token(rewardaddr, uint(eachreward), eachaddress);
         }
         startlauch = false;
