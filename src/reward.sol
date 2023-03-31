@@ -52,10 +52,13 @@ contract Launcher {
     Rewards[reward_name].rate = rate;
     Rewards[reward_name].tokenaddress = _tokenaddr;
     Rewards[reward_name].owner = _rewardowner;
-    Rewards[reward_name].startlauch;
+    Rewards[reward_name].startlauch = true;
     Rewards[reward_name].duration = duration;
     Rewards[reward_name].totalReward = total_reward;
     rewardnames.push(reward_name);
+    // if(duration >= block.timestamp){
+    //     Rewards[reward_name].startlauch = false;
+    // }
     IERC20(_tokenaddr).approve(address(this), total_reward);
     IERC20(_tokenaddr).transferFrom(_tokenaddr, address(this), total_reward);
     return true;
@@ -63,6 +66,9 @@ contract Launcher {
 
     function getRewardNames() public view returns (string[] memory) {
         return rewardnames;
+    }
+    function getlaunchStatus(string memory launchname) public view returns (bool active) {
+       return Rewards[launchname].startlauch;
     }
 
 

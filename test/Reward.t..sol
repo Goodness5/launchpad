@@ -27,9 +27,33 @@ function testAddReward() public {
     IERC20(token).approve(address(launcher), 100000000); // Add approval step
     vm.startPrank(tester1);
     vm.deal(tester1, 100000 ether);
-    launcher.AddReward(tokenaddr, 10, 100, 9999999, tester1);
+    launcher.AddReward(tokenaddr, 10, 100,1800, tester1);
+    vm.stopPrank();
 }
 
+
+function testParticipate() public{
+    testAddReward();
+    vm.startPrank(tester2);
+    vm.deal(tester2, 100);
+    // msg.value = 100 ether;
+    vm.deal(tester2, 100000 ether);
+    launcher.participate{value: 100 ether}("Launch");
+    launcher.getRewardNames();
+    vm.warp(99999999999);
+    launcher.getlaunchStatus("Launch");
+    vm.stopPrank();
+
+}
+
+    function testendlaunch() public{
+        testParticipate();
+        vm.startPrank(tester1);
+        vm.deal(tester1, 100000 ether);
+        launcher.getlaunchStatus("Launch");
+        launcher.endlaunch("Launch");
+        vm.stopPrank();
+    }
 
      function mkaddr(string memory name) public returns (address) {
         address addr = address(
