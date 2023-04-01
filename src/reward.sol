@@ -6,7 +6,6 @@ import "../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Met
 
 contract Launcher {
 
-
     address owner;
 
     struct rewarddetails {
@@ -18,7 +17,6 @@ contract Launcher {
         uint total_sale;
         address owner;
     }
-
     mapping (string => rewarddetails) Rewards;
     string[] rewardnames;
 
